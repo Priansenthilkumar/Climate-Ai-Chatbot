@@ -9,6 +9,8 @@ If the user asks about ANYTHING else (coding, sports, movies, food, history, mat
 
 Keep responses concise, friendly and use emojis where appropriate.`;
 
+export const askClimateAI = async (userMessage, history = []) => {};
+
 export const askGemini = async (userMessage, history = []) => {
   const messages = [
     { role: 'system', content: SYSTEM_CONTEXT },

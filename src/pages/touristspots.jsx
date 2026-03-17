@@ -1,11 +1,39 @@
 import { useState, useEffect } from "react";
 
+const IconMap = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M3 6L9 4L15 6L21 4V20L15 22L9 20L3 22V6Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+    <path d="M9 4V20M15 6V22" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+  </svg>
+);
+
+const IconLocation = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 2C8.13 2 5 5.13 5 9C5 14.25 12 22 12 22C12 22 19 14.25 19 9C19 5.13 15.87 2 12 2Z" stroke="currentColor" strokeWidth="2" />
+    <circle cx="12" cy="9" r="2.5" stroke="currentColor" strokeWidth="2" />
+  </svg>
+);
+
+const IconGlobe = () => (
+  <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
+    <path d="M12 2C15.3137 2 18 4.68629 18 8C18 11.3137 15.3137 14 12 14C8.68629 14 6 11.3137 6 8C6 4.68629 8.68629 2 12 2Z" stroke="currentColor" strokeWidth="2" />
+    <path d="M2 12H22M12 2V22" stroke="currentColor" strokeWidth="2" />
+  </svg>
+);
+
+const IconClose = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M6 6L18 18M6 18L18 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+  </svg>
+);
+
 const CATEGORIES = [
-  { id: "tourism",   osm: "tourism~\"attraction|museum|zoo|theme_park|gallery|viewpoint|aquarium\"", label: "🏛️ Attractions", color: "#818cf8" },
-  { id: "natural",   osm: "natural~\"peak|beach|cave_entrance|waterfall\"",                         label: "🌿 Nature",      color: "#10b981" },
-  { id: "historic",  osm: "historic~\"monument|castle|ruins|memorial|archaeological_site\"",        label: "🏰 Historic",    color: "#f97316" },
-  { id: "amenity",   osm: "amenity~\"place_of_worship|theatre|arts_centre\"",                       label: "⛪ Culture",     color: "#fbbf24" },
-  { id: "leisure",   osm: "leisure~\"park|garden|nature_reserve\"",                                 label: "🌳 Parks",       color: "#38bdf8" },
+  { id: "tourism",   osm: "tourism~\"attraction|museum|zoo|theme_park|gallery|viewpoint|aquarium\"", label: "Attractions", color: "#818cf8" },
+  { id: "natural",   osm: "natural~\"peak|beach|cave_entrance|waterfall\"",                         label: "Nature",      color: "#10b981" },
+  { id: "historic",  osm: "historic~\"monument|castle|ruins|memorial|archaeological_site\"",        label: "Historic",    color: "#f97316" },
+  { id: "amenity",   osm: "amenity~\"place_of_worship|theatre|arts_centre\"",                       label: "Culture",     color: "#fbbf24" },
+  { id: "leisure",   osm: "leisure~\"park|garden|nature_reserve\"",                                 label: "Parks",       color: "#38bdf8" },
 ];
 
 async function getCoords(city) {
@@ -92,7 +120,7 @@ function SpotCard({ spot, color, delay }) {
       <div className="dash-card-glow" style={{ background: color }} />
       {spot.image
         ? <img src={spot.image} alt={spot.name} className="spot-img" />
-        : <div className="spot-img-placeholder">🗺️</div>
+        : <div className="spot-img-placeholder"><IconMap /></div>
       }
       <div className="spot-body">
         <div className="spot-header">
@@ -177,18 +205,18 @@ export default function TouristSpots() {
       <form onSubmit={handleSearch} style={{ marginBottom: "32px" }}>
         <div className="dash-search-wrapper">
           <div className="dash-search-box">
-            <span className="dash-search-icon">🗺️</span>
+            <span className="dash-search-icon"><IconMap /></span>
             <input
               className="dash-search-input"
               value={inputCity}
               onChange={e => setInputCity(e.target.value)}
               placeholder="Search any city for tourist spots..."
             />
-            {inputCity && <button type="button" className="dash-search-clear" onClick={() => setInputCity("")}>✕</button>}
+            {inputCity && <button type="button" className="dash-search-clear" onClick={() => setInputCity("")}> <IconClose /> </button>}
           </div>
           <button type="submit" className="dash-search-btn">Search</button>
           <button type="button" onClick={handleLocation} className="dash-loc-btn">
-            <span>📍</span><span className="dash-loc-label">My Location</span>
+            <IconLocation /><span className="dash-loc-label">My Location</span>
           </button>
         </div>
       </form>
@@ -205,7 +233,7 @@ export default function TouristSpots() {
       )}
 
       {cityName && !loading && (
-        <p className="section-label" style={{ marginBottom: "24px" }}>📍 {cityName}</p>
+        <p className="section-label" style={{ marginBottom: "24px" }}><IconLocation /> {cityName}</p>
       )}
 
       {loading && (
@@ -217,11 +245,11 @@ export default function TouristSpots() {
         </div>
       )}
 
-      {error && <p className="error-msg">⚠️ {error}</p>}
+      {error && <p className="error-msg">Error: {error}</p>}
 
       {!loading && !error && spots.length === 0 && !cityName && (
         <div className="spot-empty">
-          <div style={{ fontSize: "64px", marginBottom: "16px", animation: "float 3s ease-in-out infinite" }}>🌍</div>
+          <div style={{ fontSize: "64px", marginBottom: "16px", animation: "float 3s ease-in-out infinite" }}><IconGlobe /></div>
           <h3 style={{ color: "#f1f5f9", fontSize: "20px", marginBottom: "8px" }}>Discover Amazing Places</h3>
           <p style={{ color: "#64748b", fontSize: "14px" }}>Search a city or use your location to find tourist spots nearby</p>
         </div>
